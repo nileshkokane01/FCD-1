@@ -19,7 +19,6 @@ FocusScope {
     ListModel{
         id:backgroundOption
 
-
         ListElement{
             sourcee:"image/Skin_4.png"
             scalee:0.22

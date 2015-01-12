@@ -1,26 +1,44 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <qqmlcontext.h>
+#include <QtQml>
+
+
+#include <QApplication>
+#include "serial.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
 
-    QStringList dataList1;
-    dataList1.append("Pointer");
-    dataList1.append("Skin");
-    dataList1.append("Dial");
-    dataList1.append("Calander");
-    dataList1.append("Rear Camera");
-    dataList1.append("Maps");
+    qmlRegisterType<MainWindow>("serial", 1, 0, "serialdata");
+
+
+
+    QStringList dataList;
+    dataList.append("Pointer");
+    dataList.append("Skin");
+    dataList.append("Dial");
+    dataList.append("Calander");
+    dataList.append("Rear Camera");
+    dataList.append("Maps");
+    dataList.append("Serial Input");
+    dataList.append("Dummy Input");
 
     QQmlApplicationEngine engine;
 
     QQmlContext *ctxt1 =engine.rootContext();
-    ctxt1->setContextProperty("myMenu", QVariant::fromValue(dataList1));
+    ctxt1->setContextProperty("myMenu", QVariant::fromValue(dataList));
+
+    QApplication a(argc, argv);
+    MainWindow w;
+    engine.rootContext()->setContextProperty("w", &w);
+    w.show();
+
 
     engine.load(QUrl(QStringLiteral("qrc:///main.qml")));
+
 
     return app.exec();
 }

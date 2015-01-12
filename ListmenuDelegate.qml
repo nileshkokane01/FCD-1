@@ -38,6 +38,15 @@ Item {
              break;
          case 3:
              break;
+         case 4:
+             break;
+         case 5:
+             break;
+         case 6:
+             cluster.dummySerialselect=false
+             break;
+         case 7:
+             cluster.dummySerialselect=true
          }
 
      }

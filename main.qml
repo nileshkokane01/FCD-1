@@ -1,6 +1,8 @@
 import QtQuick 2.2
 import QtQuick.Window 2.1
 import QtQuick.Controls 1.1
+import serial 1.0
+
 
 ApplicationWindow {
     visible: true
@@ -29,6 +31,7 @@ ApplicationWindow {
         property bool fuelFlag: false
         property bool parkingFlag: false
         property bool brakeFlag: false
+        property bool dummySerialselect:true
 
         property string configurablePointer:"image/Pointer3.png"
         property string configurableBackground:"image/Skin_4.png"
@@ -36,10 +39,19 @@ ApplicationWindow {
         property int configurableDial_index:2
 
 
+
+
         function rpmSpeedMeter(){
 
+            if(dummySerialselect==false){
+            rpmMeter.value1=w.rpmData
+            speedoMeter.value = w.speedData
+            }
+
+            else{
             rpmMeter.value1 = rpmValue
             speedoMeter.value = speedValue
+            }
 
             switch(gear)
             {
@@ -117,319 +129,278 @@ ApplicationWindow {
 
 
         Image {
-                   id: music_icon
-                   x: 150
-                   y: 400
-                   z: 1
-                   scale: 0.5
-                   //rotation: 90
-                   opacity: 0
-                   //clip: true
-                   //smooth: true
-                   source: "image/Music icon.png"
+            id: music_icon
+            x: 150
+            y: 400
+            z: 1
+            scale: 0.5
+            opacity: 0
+            source: "image/Music icon.png"
 
-                        focus: true
-                        Keys.onRightPressed: music_icon.x = music_icon.x + 20
-                        Keys.onLeftPressed: music_icon.x = music_icon.x - 20
-                        Keys.onUpPressed: music_icon.y = music_icon.y - 20
-                        Keys.onDownPressed: music_icon.y = music_icon.y + 20
+            focus: true
+            Keys.onRightPressed: music_icon.x = music_icon.x + 20
+            Keys.onLeftPressed: music_icon.x = music_icon.x - 20
+            Keys.onUpPressed: music_icon.y = music_icon.y - 20
+            Keys.onDownPressed: music_icon.y = music_icon.y + 20
 
 
         }
 
         Image {
-                   id: stop_engine
-                    x: 345
-                    y: 2
-                    z: 1
-                    scale: 0.35
-                    opacity: 0.05
-                    //visible: true
-                    source: "image/stop_engine.png"
+            id: stop_engine
+            x: 345
+            y: 2
+            z: 1
+            scale: 0.35
+            opacity: 0.05
+            source: "image/stop_engine.png"
         }
         Image {
-                   id: water_in_fuel
-                    x: 425
-                    y: 10
-                    z: 1
-                    scale: 0.4
-                    opacity: 0.05
-                    //visible: true
-                    source: "image/water_in_fuel.png"
+            id: water_in_fuel
+            x: 425
+            y: 10
+            z: 1
+            scale: 0.4
+            opacity: 0.05
+            source: "image/water_in_fuel.png"
         }
         Image {
-                    id: low_aux_air
-                     x: 80
-                     y: 60
-                     z: 1
-                     scale: 0.4
-                     opacity: 0.05
-                     //visible: true
-                     source: "image/low_aux_air.png"
-         }
+            id: low_aux_air
+            x: 80
+            y: 60
+            z: 1
+            scale: 0.4
+            opacity: 0.05
+            source: "image/low_aux_air.png"
+        }
         Image {
-                   id: batt_col
-                   x: 160
-                   y: 60
-                   z: 1
-                   scale: 0.4
-                   opacity: 0.05
-                   //rotation: 90
-                   source: "image/Batt col.png"
+            id: batt_col
+            x: 160
+            y: 60
+            z: 1
+            scale: 0.4
+            opacity: 0.05
+            source: "image/Batt col.png"
 
 
         }
 
 
         Image {
-                   id: highbeam
-                   x: 230
-                   y: 65
-                   z: 1
-                   scale: 0.4
-                   opacity: 0.05
-                   //rotation: 90
-                   source: "image/Highbeam.png"
+            id: highbeam
+            x: 230
+            y: 65
+            z: 1
+            scale: 0.4
+            opacity: 0.05
+            source: "image/Highbeam.png"
         }
 
         Image {
-                   id: setbelt_col
-                   x: 290
-                   y: 45
-                   z: 1
-                   scale: 0.38
-                   opacity: 0.05
-                   source: "image/setbelt col.png"
-                   //Behavior on x { SpringAnimation { spring: 2; damping: 0.2 } }
-                   //Behavior on y { SpringAnimation { spring: 2; damping: 0.2 } }
+            id: setbelt_col
+            x: 290
+            y: 45
+            z: 1
+            scale: 0.38
+            opacity: 0.05
+            source: "image/setbelt col.png"
 
-        }
-        /*MouseArea {
-                   anchors.fill: parent
-                   onClicked: {
-                                 setbelt_col.x = mouse.x - setbelt_col.width/2
-                                 setbelt_col.y = mouse.y - setbelt_col.height/2
-                              }
-                   } */
-
-        Image {
-                   id: trans_1
-                    x: 350
-                    y: 40
-                    z: 1
-                    scale: 0.35
-                    opacity: 0.08
-                    //visible: true
-                    source: "image/trans_1.png"
-        }
-
-        Image {
-                   id: dc_dc_fail
-                    x: 420
-                    y: 65
-                    z: 1
-                    scale: 0.4
-                    opacity: 0.08
-                    //visible: true
-                    source: "image/dc_dc_fail.png"
-        }
-
-        Image {
-                   id: rear_fog
-                    x: 480
-                    y: 65
-                    z: 1
-                    scale: 0.3
-                    opacity: 0.05
-                    //visible: true
-                    source: "image/rear_fog.png"
-        }
-
-        Image {
-                id: low_oil
-                 x: 540
-                 y: 92
-                 z: 1
-                 scale: 0.45
-                 opacity: 0.05
-                 //visible: true
-                 source: "image/low_oil.png"
-               }
-
-        Image {
-                   id: filter
-                    x: 620
-                    y: 80
-                    z: 1
-                    scale: 0.39
-                    opacity: 0.04
-                    //visible: true
-                    source: "image/filter.png"
-        }
-        Image {
-                   id: glow_plug
-                    x: 675
-                    y: 92
-                    z: 1
-                    scale: 0.4
-                    opacity: 0.04
-                    //visible: true
-                    source: "image/glow_plug.png"
-        }
-        Image {
-                   id: logo
-                   x: 530
-                   y: 25
-                   z: 1
-                   scale: 0.8
-                   //rotation: 90
-                   source: "image/logo.png"
-        }
-
-        /*Image {
-                id: fuel_gauge
-                x: 555
-                y: 90
-                z: 1
-                opacity: 0.4
-                source: "image/fuel_gauge.png"
-              }*/
-
-        Image {
-                id: parking_light
-                 x: 540
-                 y: 92
-                 z: 1
-                 scale: 0.45
-                 opacity: 0
-                 //visible: true
-                 source: "image/PARKING.png"
-               }
-        Image {
-                id: brakefailure
-                 x: 540
-                 y: 92
-                 z: 1
-                 scale: 0.45
-                 opacity: 0
-                 //visible: true
-                 source: "image/Brake_failure.png"
-               }
-
-        Image {
-                   id: neutral
-                    x: 600
-                    y: 150
-                    z: 1
-                    scale: 0.4
-                    //opacity: 0
-                    //visible: true
-                    source: "image/neutral.png"
         }
 
 
         Image {
-                id: turn_left
-                x: 560
-                y: 208
-                smooth: true
-                opacity: 0.05
-                z: 3
-                source: "image/turn_indicator_left.png"
+            id: trans_1
+            x: 350
+            y: 40
+            z: 1
+            scale: 0.35
+            opacity: 0.08
+            source: "image/trans_1.png"
         }
 
         Image {
-                    id: turn_right
-                    x: 660
-                    y: 208
-                    smooth: true
-                    opacity: 0.05
-                    z: 3
-                    source: "image/turn_indicator.png"
-        }
-        Image {
-                   id: cabin_lock
-                    x: 750
-                    y: 7
-                    z: 1
-                    scale: 0.45
-                    opacity: 0.05
-                    //visible: true
-                    source: "image/cabin_lock.png"
-        }
-        Image {
-                   id: exhaust
-                    x: 810
-                    y: 0
-                    z: 1
-                    scale: 0.35
-                    opacity: 0.05
-                    //visible: true
-                    source: "image/exhaust.png"
+            id: dc_dc_fail
+            x: 420
+            y: 65
+            z: 1
+            scale: 0.4
+            opacity: 0.08
+            source: "image/dc_dc_fail.png"
         }
 
         Image {
-                  id: petrol_indicator
-                  x: 740
-                  y: 38
-                  z: 1
-                  scale: 0.3
-                  opacity: 0.04
-                  source: "image/petrol.png"
+            id: rear_fog
+            x: 480
+            y: 65
+            z: 1
+            scale: 0.3
+            opacity: 0.05
+            source: "image/rear_fog.png"
         }
 
         Image {
-                   id: battery_low
-                   x: 820
-                   y: 60
-                   z: 1
-                   scale: 0.4
-                   opacity: 0.03
-                   //rotation: 90
-                   source: "image/battery_low.png"
+            id: low_oil
+            x: 540
+            y: 92
+            z: 1
+            scale: 0.45
+            opacity: 0.05
+            source: "image/low_oil.png"
         }
 
         Image {
-                   id: temp
-                   x: 870
-                   y: 60
-                   z: 1
-                   scale: 0.4
-                   opacity: 0.05
-                   //rotation: 90
-                   source: "image/Temp_Col.png"
+            id: filter
+            x: 620
+            y: 80
+            z: 1
+            scale: 0.39
+            opacity: 0.04
+            source: "image/filter.png"
+        }
+        Image {
+            id: glow_plug
+            x: 675
+            y: 92
+            z: 1
+            scale: 0.4
+            opacity: 0.04
+            source: "image/glow_plug.png"
+        }
+        Image {
+            id: logo
+            x: 530
+            y: 25
+            z: 1
+            scale: 0.8
+            source: "image/logo.png"
+        }
+
+
+        Image {
+            id: parking_light
+            x: 540
+            y: 92
+            z: 1
+            scale: 0.45
+            opacity: 0
+            source: "image/PARKING.png"
+        }
+        Image {
+            id: brakefailure
+            x: 540
+            y: 92
+            z: 1
+            scale: 0.45
+            opacity: 0
+            source: "image/Brake_failure.png"
         }
 
         Image {
-                    id: oilIndication
-                    x: 950
-                    y: 80
-                    z: 1
-                    scale: 0.7
-                    opacity: 0.03
-                    source: "image/oilIndicator.png"
+            id: neutral
+            x: 600
+            y: 150
+            z: 1
+            scale: 0.4
+            source: "image/neutral.png"
+        }
+
+
+        Image {
+            id: turn_left
+            x: 560
+            y: 208
+            smooth: true
+            opacity: 0.05
+            z: 3
+            source: "image/turn_indicator_left.png"
         }
 
         Image {
-                   id: engine_check
-                    x: 1000
-                    y: 58
-                    z: 1
-                    scale: 0.38
-                    opacity: 0.05
-                    //visible: true
-                    source: "image/engine_check.png"
+            id: turn_right
+            x: 660
+            y: 208
+            smooth: true
+            opacity: 0.05
+            z: 3
+            source: "image/turn_indicator.png"
+        }
+        Image {
+            id: cabin_lock
+            x: 750
+            y: 7
+            z: 1
+            scale: 0.45
+            opacity: 0.05
+            source: "image/cabin_lock.png"
+        }
+        Image {
+            id: exhaust
+            x: 810
+            y: 0
+            z: 1
+            scale: 0.35
+            opacity: 0.05
+            source: "image/exhaust.png"
         }
 
         Image {
-                   id: immobilizer
-                    x: 1080
-                    y: 60
-                    z: 1
-                    scale: 0.4
-                    opacity: 0.05
-                    //visible: true
-                    source: "image/immobilizer.png"
+            id: petrol_indicator
+            x: 740
+            y: 38
+            z: 1
+            scale: 0.3
+            opacity: 0.04
+            source: "image/petrol.png"
+        }
+
+        Image {
+            id: battery_low
+            x: 820
+            y: 60
+            z: 1
+            scale: 0.4
+            opacity: 0.03
+            source: "image/battery_low.png"
+        }
+
+        Image {
+            id: temp
+            x: 870
+            y: 60
+            z: 1
+            scale: 0.4
+            opacity: 0.05
+            source: "image/Temp_Col.png"
+        }
+
+        Image {
+            id: oilIndication
+            x: 950
+            y: 80
+            z: 1
+            scale: 0.7
+            opacity: 0.03
+            source: "image/oilIndicator.png"
+        }
+
+        Image {
+            id: engine_check
+            x: 1000
+            y: 58
+            z: 1
+            scale: 0.38
+            opacity: 0.05
+            source: "image/engine_check.png"
+        }
+
+        Image {
+            id: immobilizer
+            x: 1080
+            y: 60
+            z: 1
+            scale: 0.4
+            opacity: 0.05
+            source: "image/immobilizer.png"
         }
 
         Image{
@@ -438,28 +409,6 @@ ApplicationWindow {
             source:cluster.configurableBackground
         }
 
-       /* Image {
-            id: fuel_pointer
-            x: 622
-            y: 60
-            z: 0
-            clip:true
-            smooth:true
-            opacity: 1
-            source: "image/fuelneedle.png"
-            transform:Rotation{
-                id:fuelpointer
-                origin.x: 5; origin.y: 43
-                angle: Math.min(Math.max(-70, speedoMeter.value*2.6 - 130), 70)
-                Behavior on angle{
-                    SpringAnimation{
-                        spring:1.4
-                        damping: .60
-                    }
-                }
-
-            }
-        }*/
 
 
         Image {
@@ -737,24 +686,18 @@ ApplicationWindow {
                 y: 28;
                 opacity: 0.8;
                 z: 3;
-                //scale:0.7
-                //source: "image/speed_inactive.png"
+
                 states:[
                     State {
                         name: "change_speed_dial1"; when: cluster.configurableDial_index == 1
                         PropertyChanges { target: speed_inactive; source:"image/RPM_01.png"} //scale:1.2
                     },
-                   State {
+                    State {
                         name: "change_speed_dial2"; when: cluster.configurableDial_index == 2
                         PropertyChanges { target: speed_inactive; source:"image/speed_inactive.png"} //scale:0.7
                     }
-                  ]
-               /* transitions: Transition {
-                    from: "change_speed_dial2"; to: "change_speed_dial1"; reversible:true
-                            ParallelAnimation {
-                                NumberAnimation { properties: "scale"; duration: 2000;}
-                            }
-                        } */
+                ]
+
             }
 
             Image {
@@ -782,12 +725,12 @@ ApplicationWindow {
                     origin.y: 80 //65
                     angle: switch(cluster.configurableDial_index)
                            {
-                            case 1:(Math.min(Math.max(-115, speedoMeter.value*2.6 - 115), 185));
-                                break;
-                            case 2:(Math.min(Math.max(-130, speedoMeter.value*2.6 - 130), 133));
-                                break;
+                           case 1:(Math.min(Math.max(-115, speedoMeter.value*2.6 - 115), 185));
+                               break;
+                           case 2:(Math.min(Math.max(-130, speedoMeter.value*2.6 - 130), 133));
+                               break;
                            }
-/**/
+
                     Behavior on angle  {
                         SpringAnimation  {
                             spring: 1.4
@@ -808,7 +751,7 @@ ApplicationWindow {
             y: 118
             visible: true
             z: 0
-           // scale:0.5
+
             opacity: 1
             anchors.verticalCenterOffset: 8
             anchors.horizontalCenterOffset: -207
@@ -819,26 +762,19 @@ ApplicationWindow {
                 x: -30;
                 y: 20;
                 opacity: 0.8;
-
                 z: 3;
-                //scale:0.7
+
                 states:[
                     State {
                         name: "change_rpm_dial1"; when: cluster.configurableDial_index == 1;
                         PropertyChanges { target: rpm_inactive; source:"image/Speedo_01.png"}//scale:1.2
-                        },
-                   State {
+                    },
+                    State {
                         name: "change_rpm_dial2"; when: cluster.configurableDial_index == 2
                         PropertyChanges { target: rpm_inactive; source:"image/rpm_inactive.png";} //scale:0.7
                     }
-                  ]
-             /*   transitions: Transition {
-                    from: "change_rpm_dial2"; to: "change_rpm_dial1"; reversible:true
-                            ParallelAnimation {
-                                NumberAnimation { properties: "scale"; duration: 2000;}
-                            }
-                        }*/
-              //source: cluster.configurableDial
+                ]
+
                 smooth: true
             }
 
@@ -868,12 +804,12 @@ ApplicationWindow {
                     origin.y: 80 //369 //65
                     angle:switch(cluster.configurableDial_index)
                           {
-                           case 1:(Math.min(Math.max(-180, rpmMeter.value1*2.6 - 180),150));
-                               break;
-                           case 2:(Math.min(Math.max(-130, rpmMeter.value1*2.6 - 130),133));
-                               break;
+                          case 1:(Math.min(Math.max(-180, rpmMeter.value1*2.6 - 180),150));
+                              break;
+                          case 2:(Math.min(Math.max(-130, rpmMeter.value1*2.6 - 130),133));
+                              break;
                           }
-/**/
+
                     Behavior on angle  {
                         SpringAnimation  {
                             spring: 1.4
@@ -888,11 +824,6 @@ ApplicationWindow {
 
 
         states: [
-           /* State {
-                name: "parseConfigurationMenu"
-                when: listItem.activeFocus
-                PropertyChanges { target: listItem; x: 0 }
-            },*/
 
             State {
                 name: "parseMenuOption"
@@ -922,7 +853,6 @@ ApplicationWindow {
             }
 
         ]
-
 
         transitions: Transition {
             NumberAnimation { properties: "x"; duration: 600; easing.type: Easing.OutQuint }
@@ -974,9 +904,7 @@ ApplicationWindow {
                 y:140; width: parent.width; height: parent.height ;anchors.margins:3
                 opacity:0
 
-            }/**/
-
-
+            }
 
             PointerView{
                 id:viewPointeroption ;width: 350; height:350;x:-1300;y:100;z:3
@@ -992,8 +920,6 @@ ApplicationWindow {
                 id:viewDialoption;width:350;height:350;x:1300;y:100;z:3
 
             }
-
-
 
             StartstopButton{
 
@@ -1036,7 +962,7 @@ ApplicationWindow {
                         dummyAnimation.running=false
                     }
                 }
-            }/**/
+            }
         }
 
 
@@ -1117,8 +1043,6 @@ ApplicationWindow {
             id: dialEffectStop
             running: false
 
-            //NumberAnimation{target: digitRectangle; property: "opacity"; to: 0; duration: 1000}
-
             //Throwing the RPM meter sideways
             NumberAnimation { target:rpm_active; property:"x";to:241 ; duration: 500 } //241
             NumberAnimation { target:rpm_inactive; property:"x";to: -30; duration: 500 }
@@ -1136,12 +1060,12 @@ ApplicationWindow {
             NumberAnimation { target:rpm_active; property:"y";to:99; duration: 500 }
             NumberAnimation { target:rpm_inactive; property:"y";to:20; duration: 500 }
             NumberAnimation { target:needle; property: "y"; to:switch(cluster.configurableDial_index){case 1:64;break;case 2:84;break;}duration: 500}
-            //NumberAnimation { target:rpmOverlay; property: "y"; to:switch(cluster.configurableDial_index){case 1:127;break;case 2:157;break;}duration: 500}
+
 
             NumberAnimation { target:rpm_active; property:"scale";to:1; duration: 500 }
             NumberAnimation { target:rpm_inactive; property:"scale";to:1; duration: 500 }
             NumberAnimation { target:needle; property: "scale"; to:1; duration: 500}
-            //NumberAnimation { target:rpmOverlay; property: "scale"; to:1; duration: 500}
+
 
 
             NumberAnimation { target: turn_left; property: "x"; to: 560; duration: 500}
@@ -1155,7 +1079,6 @@ ApplicationWindow {
             NumberAnimation { target:speed_active; property:"x";to: 695; duration: 500 }
             NumberAnimation { target:speed_inactive; property:"x";to: -9; duration: 500 }
             NumberAnimation { target:needle1; property: "x"; to:switch(cluster.configurableDial_index){case 1:127;break;case 2:124;break;}duration: 500}
-            //NumberAnimation { target:speedOverlay; property: "x"; to:switch(cluster.configurableDial_index){case 1:135;break;case 2:124;break;}duration: 500}
             NumberAnimation { target: speed_active; property:  "opacity"; to: 0; duration: 1500}
 
             NumberAnimation { target:speed_active; property:"y";to: 95; duration: 500 }
@@ -1166,11 +1089,6 @@ ApplicationWindow {
             NumberAnimation { target:speed_active; property:"scale";to: 1; duration: 500 }
             NumberAnimation { target:speed_inactive; property:"scale";to:1; duration: 500 }
             NumberAnimation { target:needle1; property: "scale"; to:1; duration: 500}
-            //NumberAnimation { target:speedOverlay; property: "scale"; to:1; duration: 500}
-
-            //NumberAnimation { target:petrol_indicator; property: "x"; to: 980; duration: 500 }
-            //NumberAnimation { target:petrol_indicator; property: "y"; to: 59; duration: 500 }
-
 
             NumberAnimation { target: digitalSpeed; property: "x"; to: 840; duration: 500}
             NumberAnimation { target: digitalSpeed; property: "y"; to: 280; duration: 500}
@@ -1271,7 +1189,7 @@ ApplicationWindow {
             NumberAnimation{target: engine_check; property: "opacity"; to: 1; duration: 100}
             NumberAnimation{target: immobilizer; property: "opacity"; to: 1; duration: 100}
 
-}
+        }
 
         // decrease all indicators opacity
         SequentialAnimation{
