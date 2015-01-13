@@ -8,7 +8,7 @@
 
 class Console;
 
-class MainWindow : public QMainWindow
+class SerialLog : public QMainWindow
 {
     Q_OBJECT
     Q_PROPERTY(int speedData READ speedData WRITE setspeedData)
@@ -25,10 +25,10 @@ public:
     };
 
 
-    explicit MainWindow(QWidget *parent = 0);
+    explicit SerialLog(QWidget *parent = 0);
     int speedData();
     int rpmData();
-    ~MainWindow();
+    ~SerialLog();
 
 private :
     void getPortInfo();
@@ -38,9 +38,9 @@ signals:
     void getSpeedData(const int &data1);
 
 private slots:
-    void openSerialConsole();
-    void closeSerialConsole();
-    void readSerialConsole();
+    void openSerialLog();
+    void closeSerialLog();
+    void readSerialLog();
     void setspeedData(const int);
     void setrpmData(const int);
 

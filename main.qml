@@ -1165,7 +1165,6 @@ ApplicationWindow {
             id: indicatorAnimateFocus
             running: false
 
-
             ///NumberAnimation{target: fuel_gauge; property:  "opacity"; to: 0.1; duration: 100}
             NumberAnimation{target: neutral; property:  "opacity"; to: 1.0; duration: 100}
             NumberAnimation{target: stop_engine; property:  "opacity"; to: 1.0; duration: 100}

@@ -9,7 +9,7 @@
 #include "console.h"
 #include <qdebug.h>
 
-MainWindow::MainWindow(QWidget *parent) :
+SerialLog::SerialLog(QWidget *parent) :
     QMainWindow(parent)
 {
     console = new Console;
@@ -23,33 +23,33 @@ MainWindow::MainWindow(QWidget *parent) :
     serialConsole->setParity(currentSettings.parity);
     serialConsole->setFlowControl(currentSettings.flowControl);
     serialConsole->open(QIODevice::ReadWrite);
-    connect(serialConsole, SIGNAL(readyRead()), this, SLOT(readSerialConsole()));
+    connect( serialConsole, SIGNAL(readyRead()), this, SLOT(readSerialLog()));
     connect(this, SIGNAL(getSpeedData(int)), this, SLOT(setspeedData(int)));
     connect(this, SIGNAL(getRpmData(int)), this, SLOT(setrpmData(int)));
 }
 
-MainWindow::~MainWindow()
+SerialLog::~SerialLog()
 {
     //delete ui;
 }
 
-void MainWindow::openSerialConsole(){
+void SerialLog::openSerialLog(){
     serialConsole->setBaudRate(QSerialPort::Baud115200);
     serialConsole->setDataBits(QSerialPort::Data8);
     serialConsole->setParity(QSerialPort::NoParity);
 }
 
 
-void MainWindow::closeSerialConsole(){
+void SerialLog::closeSerialLog(){
     serialConsole->close();
 }
 
-void MainWindow::readSerialConsole(){
+void SerialLog::readSerialLog(){
     QByteArray cmprpm= "rpm-";
     QByteArray cmpspd= "spd-";
     qint8 positionV;
     int result;
-    QByteArray serialData= serialConsole->readAll();
+    QByteArray serialData=  serialConsole->readAll();
     console->putData(serialData);
     if(serialData.contains(cmprpm)||serialData.contains(cmpspd)){
 
@@ -72,7 +72,7 @@ void MainWindow::readSerialConsole(){
     positionV=0;
 }
 
-void MainWindow::getPortInfo(){
+void SerialLog::getPortInfo(){
 
     static const QString blankString = QObject::tr("N/A");
     QString description;
@@ -102,17 +102,17 @@ void MainWindow::getPortInfo(){
 
 }
 
-int MainWindow::speedData(){
+int SerialLog::speedData(){
     return m_speedData;
 }
-int MainWindow::rpmData(){
+int SerialLog::rpmData(){
     return m_rpmData;
 }
-void MainWindow::setspeedData(const int data)
+void SerialLog::setspeedData(const int data)
 {
     m_speedData=data;
 }
 
-void MainWindow::setrpmData(const int data1){
+void SerialLog::setrpmData(const int data1){
     m_rpmData=data1;
 }

@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
 
-    qmlRegisterType<MainWindow>("serial", 1, 0, "serialdata");
+    qmlRegisterType<SerialLog>("serial", 1, 0, "serialdata");
 
 
 
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     ctxt1->setContextProperty("myMenu", QVariant::fromValue(dataList));
 
     QApplication a(argc, argv);
-    MainWindow w;
+    SerialLog w;
     engine.rootContext()->setContextProperty("w", &w);
     w.show();
 
